@@ -1,0 +1,15 @@
+{{extend 'layout.html'}}
+<h1>View Students</h1>
+<Button type="button" onclick = 'window.location="{{=URL(c='faculty', f='index')}}";'>Back</Button>
+<div class="container">
+    <h2>Your Students</h2>
+    <ul>
+    {{if users:}}
+        {{for i in range(len(users)):}}
+            {{for j in range(len(users[i])):}}
+                <h4><li><h4><li>{{=A(T(users[i][j].first_name + " " + users[i][j].last_name),_href=URL(c='faculty', f='student', vars=dict(id=users[i][j].id)))}}</li></h4></li></h4>
+            {{pass}}
+        {{pass}}
+    {{pass}}
+    </ul>
+</div>

@@ -1,0 +1,11 @@
+{{extend 'layout.html'}}
+<h1>Created Path</h1>
+<button onclick="window.history.back()">Back</button>
+<div class="container">
+    <h3>{{=start}}</h3>
+    {{for i in range(len(path)):}}
+        {{if i % classes_per_quarter == 1:}}
+            <h3>Test</h3>
+        {{pass}}
+    {{pass}}
+</div>

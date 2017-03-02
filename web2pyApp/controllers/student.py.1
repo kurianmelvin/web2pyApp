@@ -1,0 +1,22 @@
+# -*- coding: utf-8 -*-
+# try something like
+TEST=('MS Information Systems', 'Test', 'Test2')
+
+
+def index():
+    paths = db(db.paths_saved.id == auth.user.id).select()
+    return dict(paths=paths)
+
+
+def paths():
+    student_id = long(request.vars['id'])
+    if auth.user.id != student_id and auth.user.permission < 1:
+        redirect(URL(c='user', f='not_authorized'))
+    else:
+        path = db(db.paths_saved.student_id == student_id).select(db.paths_saved.course_path)
+        return dict(path=path, id=student_id)
+
+
+def create_path():
+    form = FORM('Your name: ', INPUT(_name='name'), INPUT(_type='submit'))
+    return dict(form=form)

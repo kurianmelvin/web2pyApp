@@ -1,0 +1,28 @@
+{{extend 'layout.html'}}
+<h1>Course Approvals: {{=name[0].first_name + " " + name[0].last_name}}</h1>
+<Button type="button" onclick = 'window.history.back();'>Back</Button>
+<div class="container">
+{{if course:}}
+    <h2><b>Course</b></h2>
+    <h3>{{=course[0].course_number + " - " + course[0].course_name}}</h3>
+    <h5>{{=course[0].description}}</h5>
+{{pass}}
+{{if student:}}
+    <h2><b>Student</b></h2>
+    <table>
+    <tr>
+        <td><b>ID:</b> {{=student[0].id}}</td>
+    </tr>
+    <tr>
+        <td><b>Name:</b> {{=student[0].first_name + " " + student[0].last_name}}</td>
+    </tr>
+</table>
+{{pass}}
+<h1></h1>
+<table>
+    <tr>
+        <td>{{=form1}}</td>
+        <td>{{=form2}}</td>
+    </tr>
+</table>
+</div>

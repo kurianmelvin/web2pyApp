@@ -1,0 +1,6 @@
+{{extend 'layout.html'}}
+<h1>Viewing Student: {{=name[0].first_name + " " + name[0].last_name}}</h1>
+<Button type="button" onclick = 'window.location="{{=URL(c='faculty', f='view_students')}}";'>Back</Button>
+<div class="container">
+    {{=profile}}
+</div>

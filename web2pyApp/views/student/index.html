@@ -1,0 +1,13 @@
+{{extend 'layout.html'}}
+<h1>Student Home</h1>
+<div class="container">
+<Button type="button" onclick = 'window.location="{{=URL(c='path', f='create_path')}}";'>Create Path</Button>
+<h2><b>Saved Paths</b></h2>
+{{if not paths:}}
+    <h3>None</h3>
+{{else:}}
+    {{for row in paths:}}
+        <h4><li>{{=A(T(row.path_name),_href=URL(c='path', f='view_path', vars=dict(id=row.student_id, start=row.start_quarter, path=row.course_path, path_id=row.id)))}}</li></h4>
+    {{pass}}
+{{pass}}
+</div>

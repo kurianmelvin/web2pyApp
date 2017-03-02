@@ -1,0 +1,172 @@
+{{extend 'layout.html'}}
+<h1>Select Electives</h1>
+<div class="container">
+{{if area:}}
+    {{area_courses = db(db.courses2.area.contains(area)).select()}}
+    {{other_courses = db((~db.courses2.area.contains(area) & (~db.courses2.area.contains([1,2])))).select()}}
+    {{other_courses.exclude(lambda r: r.id == 118)}}
+    {{if area == 3 or area == 6:}}
+        {{area_courses.exclude(lambda r: long(r.id) == 28 or long(r.id) == 29)}}
+    {{else:}}
+        {{other_courses.exclude(lambda r: long(r.id) == 28 or long(r.id) == 29)}}
+    {{pass}}
+    <table>
+        <tr>
+            <td>
+                <h3><b>Area Courses</b></h3>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h4>Select at least 4 courses.</h4>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <select multiple style="width:420px;height:250px" id="area">
+                   {{for course in area_courses:}}
+                        <option value={{=course.id}}>{{=course.course_number.upper() + " - " + course.course_name}}</option>
+                   {{pass}}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h3><b>Other Courses</b></h3>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h4>Select at least 4 courses.</h4>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <select multiple style="width:420px;height:250px" id="other">
+                    {{for course in other_courses:}}
+                        <option value={{=course.id}}>{{=course.course_number.upper() + " - " + course.course_name}}</option>
+                    {{pass}}
+            </select>
+            </td>
+        </tr>
+        <tr>
+            <td align="right">
+                <br>
+                <button id="submit">Submit</button>
+                <br>
+                <br>
+            </td>
+        </tr>
+    </table>
+{{elif concentration:}}
+    {{major_courses = db((db.courses2.area.contains([10,11,12,13,14,15,16,17,18,19,20,21])) & (db.courses2.area != area)).select()}}
+    {{open_courses = db((~db.courses2.area.contains([1,2]) & (db.courses2.area.contains([3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21])))).select()}}
+    {{major_courses.exclude(lambda r: r.id == 118)}}
+    {{open_courses.exclude(lambda r: r.id == 118)}}
+    <table>
+        <tr>
+            <td>
+                <h3><b>Major Courses</b></h3>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{if concentration == "Business Intelligence" or concentration == "Database Administration" or concentration == "IT Enterprise Management":}}
+                    <h4 class="major_num">Select 3 courses.</h4>
+                {{elif concentration == "Standard":}}
+                    <h4 class="major_num">Select 7 courses.</h4>
+                {{else:}}
+                    <h4 class="major_num">Select 2 courses.</h4>
+                {{pass}}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <select multiple style="width:420px;height:250px" id="major">
+                   {{for course in major_courses:}}
+                        <option value={{=course.id}}>{{=course.course_number.upper() + " - " + course.course_name}}</option>
+                   {{pass}}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h3><b>Open Courses</b></h3>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h4>Select at least 1 course.</h4>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <select multiple style="width:420px;height:250px" id="open">
+                    {{for course in open_courses:}}
+                        <option value={{=course.id}}>{{=course.course_number.upper() + " - " + course.course_name}}</option>
+                    {{pass}}
+            </select>
+            </td>
+        </tr>
+        <tr>
+            <td align="right">
+                <br>
+                <button id="submit">Submit</button>
+                <br>
+                <br>
+            </td>
+        </tr>
+    </table>
+{{pass}}
+</div>
+
+<script>
+    jQuery(document).ready(function(){
+        jQuery("#submit").click(function(){
+            if (jQuery("#area").is(":visible")){
+                var area_count = jQuery("#area :selected").length;
+                var other_count = jQuery("#other :selected").length;
+                if (area_count < 4){
+                    alert("You must select at least 4 area electives.");
+                }
+                else if (other_count < 4){
+                    alert("You must select at least 4 other electives.");
+                }
+                else{
+                    var area_classes = [];
+                    var other_classes = [];
+                    jQuery("#area :selected").each(function(i, selected){
+                        area_classes[i] = jQuery(selected).val();
+                    });
+                    jQuery("#other :selected").each(function(i, selected){
+                        other_classes[i] = jQuery(selected).val();
+                    });
+                    location.href="{{=URL(c='path', f='created_path')}}" + window.location.search + "&area_classes=" + area_classes + "&other_classes=" + other_classes;
+                }
+            }
+            else{
+                var major_count = jQuery("#major :selected").length;
+                var open_count = jQuery("#open :selected").length;
+                var max_major = jQuery(".major_num").html().split(" ")[1];
+                var num = parseInt(max_major)
+                if (major_count < num){
+                    alert("You must select at least " + num + " major electives.");
+                }
+                else if (open_count < 1){
+                       alert("You must select at least 1 open elective.");
+                }
+                else{
+                    var major_classes = [];
+                    var open_classes = [];
+                    jQuery("#major :selected").each(function(i, selected){
+                        major_classes[i] = jQuery(selected).val();
+                    });
+                    jQuery("#open :selected").each(function(i, selected){
+                        open_classes[i] = jQuery(selected).val();
+                    });
+                    location.href="{{=URL(c='path', f='created_path')}}" + window.location.search + "&area_classes=" + area_classes + "&other_classes=" + other_classes + "&max=" + num;
+                }
+            }
+    });
+    });
+</script>

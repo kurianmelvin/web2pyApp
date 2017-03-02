@@ -1,0 +1,17 @@
+{{extend 'layout.html'}}
+<h1>Admin Home</h1>
+<div class="container">
+    <h2><b>Courses</b></h2>
+    <Button style="width:110px" type="button" onclick = 'window.location="{{=URL(c='admin', f='courses')}}";'>View Courses</Button>
+    <Button type="button" onclick = 'window.location="{{=URL(c='admin/courses', f='new/courses2')}}";'>Add New</Button>
+
+    <h2><b>Users</b></h2>
+    <Button style="width:110px" type="button" onclick = 'window.location="{{=URL(c='admin', f='users')}}";'>View Users</Button>
+    <Button type="button" onclick = 'window.location="{{=URL(c='admin', f='users/new/auth_user')}}";'>Add New</Button>
+    
+    <h2><b>Faculty View</b></h2>
+    <Button style="width:110px" type="button" onclick = 'window.location="{{=URL(c='admin', f='faculty_view')}}";'>Select Faculty</Button>
+    
+    <h2><b>Student View</b></h2>
+    <Button style="width:110px" type="button" onclick = 'window.location="{{=URL(c='admin', f='student_view')}}";'>Select Student</Button>
+</div>

@@ -1,0 +1,18 @@
+{{extend 'layout.html'}}
+<h1>Faculty Home</h1>
+<div class="container">
+	<h2><b>Approvals Needed</b></h2>
+	{{if not approvals:}}
+		<h5>None</h5>
+	{{else:}}
+		{{for i in range(len(approvals)):}}
+			{{for j in range(len(approvals[i])):}}
+				<h4><li>{{=A(T(approvals[i][j].courses2.course_name + " " + str(approvals[i][j].courses2.course_number) + " - " +
+                    approvals[i][j].auth_user.first_name + " " + approvals[i][j].auth_user.last_name),_href=URL(c='faculty', f='approval', vars=dict(student_id=str(approvals[i][j].auth_user.id),
+                    course_id=str(approvals[i][j].courses2.id))))}}</li></h4>
+			{{pass}}
+		{{pass}}
+	{{pass}}
+	<h2><b>Students</b></h2>
+	<Button type="button" onclick = 'window.location="{{=URL(c='faculty', f='view_students')}}";'>View Students</Button>
+</div>

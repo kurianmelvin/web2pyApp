@@ -1,0 +1,12 @@
+{{extend 'layout.html'}}
+<h1>Courses</h1>
+<Button id="back" type="button" onclick = 'window.history.back();'>Back</Button>
+<br>
+<br>
+{{=grid}}
+<script>
+    jQuery(document).ready(function(){
+        if(jQuery(".button.btn.btn-default").is(":visible") && jQuery(".buttontext.button").first().text() === "Back")
+           jQuery('.button.btn.btn-default').first().hide();
+    });
+</script>

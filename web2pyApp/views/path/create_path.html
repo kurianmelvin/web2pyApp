@@ -1,0 +1,117 @@
+{{extend 'layout.html'}}
+<h1>Create Path</h1>
+<Button type="button" onclick = 'window.history.back();'>Back</Button>
+<div class="container">
+    <table style="width:60%">
+        <col width="300">
+        <tr>
+            <td><h3>Degree:</h3></td>
+            <td>
+                <select id="degree" name="degree" style="width:260px" class="select-style">
+                    <option value="compsci">MS Computer Science</option>
+                    <option value="infosys">MS Information Systems</option>
+                </select>
+            </td>
+        </tr>
+        <tr id="area">
+            <td><h3>Preferred Major Area:</h3></td>
+            <td>
+                <select id="area" name="compsci_area" style="width:260px" class="select-style">
+                    <option value=3>Software and Systems Development</option>
+                    <option value=4>Theory</option>
+                    <option value=7>Data Science</option>
+                    <option value=5>Database Systems</option>
+                    <option value=8>Artificial Intelligence</option>
+                    <option value=6>Software Engineering</option>
+                    <option value=9>Multimedia</option>
+                </select>
+            </td>
+        </tr>
+        <tr id="concentration">
+            <td><h3>Concentration:</h3></td>
+            <td>
+                <select id="concentration" name="concentration" style="width:260px" class="select-style">
+                    <option value="bus_intell">Business Intelligence</option>
+                    <option value="bus_analysis">Business Analysis/Systems Analysis</option>
+                    <option value="data_admin">Database Administration</option>
+                    <option value="it_enter">IT Enterprise Management</option>
+                    <option value="standard">Standard</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><h3>Starting Quarter:</h3></td>
+            <td>
+                <select id="starting_quarter" name="quarter" style="width:260px" class="select-style">
+                    <option value="winter_2017">Winter 2017</option>
+                    <option value="spring_2017">Spring 2017</option>
+                    <option value="fall_2017">Fall 2017</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><h3>Classes Per Quarter:</h3></td>
+            <td>
+                <select id="class_per_quarter" name="classes_per_quarter" style="width:260px" class="select-style">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><h3>Class Delivery:</h3></td>
+            <td>
+                <select id="class_delivery" name="class_delivery" style="width:260px" class="select-style">
+                    <option value="2">In-Class</option>
+                    <option value="3">Online</option>
+                    <option value="4">Both - In-Class & Online</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td style="height:100px">
+                <button id="create_path">Create Path</button>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<script>
+    jQuery(document).ready(function(){
+        if(jQuery('#degree').val() == 'compsci'){
+            jQuery('#concentration').hide();
+            jQuery('#area').show();
+        }
+        else{
+            jQuery('#concentration').show();
+            jQuery('#area').hide();
+        }
+        jQuery('#degree').change(function(){
+            if(jQuery('#degree').val() == 'compsci'){
+                jQuery('#concentration').hide();
+                jQuery('#area').show();
+            }
+            else {
+                jQuery('#concentration').show();
+                jQuery('#area').hide();
+            }
+        });
+        jQuery('#create_path').click(function(){
+            var degree = jQuery('#degree option:selected').text();
+            var start_quarter = jQuery('#starting_quarter option:selected').text();
+            var class_per_quarter = jQuery('#class_per_quarter').val();
+            var class_delivery = jQuery('#class_delivery').val();
+            if(jQuery('#concentration').is(":visible")){
+                var concentration = jQuery('#concentration option:selected').text();
+                location.href="{{=URL(c='path', f='select_electives')}}" + "?" + "degree=" + degree + "&" +
+                    "concen=" + concentration + "&" + "start=" + start_quarter + "&" + "classes=" + class_per_quarter + "&" + "delivery=" + class_delivery;
+            }
+            else{
+                var area = jQuery('#area option:selected').val();
+                location.href="{{=URL(c='path', f='select_electives')}}" + "?" + "degree=" + degree + "&" +
+                    "area=" + area + "&" + "start=" + start_quarter + "&" + "classes=" + class_per_quarter + "&" + "delivery=" + class_delivery;
+            }
+        });
+    });
+</script>

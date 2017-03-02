@@ -1,0 +1,32 @@
+{{extend 'layout.html'}}
+<h1>Created Path</h1>
+<Button type="button" onclick = 'window.location="{{=URL(c='student', f='index')}}";'>Back</Button>
+<div class="container">
+    {{import json}}
+    {{start_quarter = start}}
+    {{current_quarter = start_quarter}}
+    {{json_path = json.loads(path)}}
+    {{current_year = int(year)}}
+    {{for i in range(len(json_path)):}}
+        <h3>{{=current_quarter + " " + str(current_year)}}</h3>
+        <ul>
+            {{for i in json_path[current_quarter + " " + str(current_year)]:}}
+                <li>
+                    {{course = db(db.courses2.id == i).select(db.courses2.course_number, db.courses2.course_name)}}
+                    {{=course[0].course_number.upper() + " - " + course[0].course_name}}
+                </li>
+            {{pass}}
+        </ul>
+        {{current_quarter = quarter(current_quarter)}}
+        {{if current_quarter == start_quarter:}}
+            {{current_year += 1}}
+        {{pass}}
+    {{pass}}
+    <br>
+    <br>
+    {{if auth.is_logged_in():}}
+        {{=submit}}
+        <br>
+        <br>
+    {{pass}}
+</div>

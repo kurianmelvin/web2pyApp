@@ -1,0 +1,364 @@
+# -*- coding: utf-8 -*-
+# try something like
+import random
+import json
+import Queue
+import datetime
+
+def index(): return dict(message="hello from path.py")
+
+
+def view_path():
+    path_id = long(request.vars['path_id'])
+    id = long(request.vars['id'])
+    start = request.vars['start']
+    path = request.vars['path']
+    if auth.user.id == id or auth.user.permission > 0:
+        form1=FORM(INPUT(_type="Submit", _value="Delete Path"))
+        if form1.process(formname='form_one').accepted:
+            del db.paths_saved[path_id]
+            session.flash = "Path deleted."
+            redirect(URL(c='student', f='index'))
+        elif form1.errors:
+            response.flash = "Error! Path not deleted"
+        return dict(start=start, path=path, id=id, quarter=next_quarter, delete=form1)
+    else:
+        redirect(URL(c='user', f='not_authorized'))
+        
+def select_electives():
+    area = request.vars['area']
+    concentration = request.vars['concen']
+    return dict(area=area, concentration=concentration)
+
+def create_path():
+    return dict(form="Create path")
+
+def create_json(classes, starting_quarter, classes_per_quarter):
+    start_quarter = starting_quarter.split()[0]
+    current_quarter = start_quarter
+    year = int(starting_quarter.split()[1])
+
+    q = Queue.Queue()
+
+    path = {}
+    for course in classes:
+        q.put(course)
+    while not q.empty():
+        quarter_classes = []
+        for j in range(classes_per_quarter):
+            if not q.empty():
+                quarter_classes.append(q.get())
+            path[current_quarter + " " + str(year)] = quarter_classes
+        current_quarter = next_quarter(current_quarter)
+        if (current_quarter == start_quarter):
+            year += 1
+    json_data = json.dumps(path)
+    return json_data
+
+def next_quarter(quarter):
+    if quarter == "Winter":
+        return "Spring"
+    elif quarter == "Spring":
+        return "Fall"
+    elif quarter == "Fall":
+        return "Winter"
+
+
+def check_if_next_quarter(classes, quarter, classes_per_quarter):
+    if len(classes) % classes_per_quarter == 0:
+        return next_quarter(quarter)
+    else:
+        return quarter
+    
+def area_to_string(area):
+    if area == 3:
+        return "Software and Systems Development"
+    elif area == 4:
+        return "Theory"
+    elif area == 5:
+        return "Database Systems"
+    elif area == 6:
+        return "Software Engineering"
+    elif area == 7:
+        return "Data Science"
+    elif area == 8:
+        return "Artifical Intelligence"
+    else:
+        return "Multimedia"
+
+
+def created_path():
+    degree = request.vars['degree']
+    starting_quarter = str(request.vars['start'])
+    classes_per_quarter = int(request.vars['classes'])
+    class_delivery = request.vars['delivery']
+    path = []
+    form1=FORM(INPUT(_type="Submit", _value="Save Path"))
+    if request.vars['concen'] != None:
+        concentration = request.vars['concen']
+        path = shortest_path_compsci(starting_quarter, area, classes_per_quarter)
+        return dict(degree=degree, concentration=concentration, start=starting_quarter, classes=classes_per_quarter, delivery=class_delivery)
+    else:
+        area = int(request.vars['area'])
+        area_classes = request.vars['area_classes'].split(",")
+        other_classes = request.vars['other_classes'].split(",")
+        area_name = area_to_string(area)
+        path = shortest_path_compsci(starting_quarter, area, classes_per_quarter, area_classes, other_classes)
+        path_json = create_json(path, starting_quarter, classes_per_quarter)
+        if form1.process(formname='form_one').accepted:
+            date = datetime.date.today()
+            path_name = degree + " (" + area_name + ") - " + str(date) + " - " + starting_quarter
+            db.paths_saved.insert(student_id=auth.user_id, course_path=path_json, path_name=path_name, start_quarter=starting_quarter)
+            response.flash = "Path saved."
+        elif form1.errors:
+            response.flash = "Error! Path not saved."
+        return dict(start=starting_quarter.split()[0], year=starting_quarter.split()[1], classes=classes_per_quarter, quarter=next_quarter, path=path_json, submit=form1, area=area_classes)
+    
+def only_offered_winter(course):
+    return course.winter == True and course.fall == False and course.spring == False
+
+def only_offered_spring(course):
+    return course.spring == True and course.fall == False and course.winter == False
+
+def only_offered_fall(course):
+    return course.fall == True and course.spring== False and course.winter == False
+
+def check_current_quarter(classes,current, cpq):
+    if len(current) == cpq:
+        classes.extend(current_quarter_classes)
+        del current_quarter_classes[:]
+    
+def check_area_count(check, area):
+    if area in check.area and area < 4:
+        return True
+    return False
+    
+def create_classes_path(classes, quarter, area, classes_per_quarter, area_classes, other_classes):
+    
+    electives = []
+    
+    for course in area_classes:
+        if course != ",":
+            electives.append(course)
+    
+    for course in other_classes:
+        if course != ",":
+            electives.append(course)
+    
+    winter_queue = Queue.Queue()
+    spring_queue = Queue.Queue()
+    fall_queue  = Queue.Queue()
+    
+    remove_electives = []
+    for course_id in electives:
+        course = db(db.courses2.id == course_id).select()[0]
+        if only_offered_winter(course):
+            winter_queue.put(long(course.id))
+            remove_electives.append(long(course.id))
+            
+        elif only_offered_spring(course):
+            spring_queue.put(long(course.id))
+            remove_electives.append(long(course.id))
+
+        elif only_offered_fall(course):
+            fall_queue.put(long(course.id))
+            remove_electives.append(long(course.id))
+
+
+
+    area_classes = 0
+    other_classes = 0
+    
+    
+    current_quarter_classes = []
+
+    while area_classes < 1:
+
+        check_current_quarter(classes, current_quarter_classes, classes_per_quarter)
+
+        course = electives[0]
+        course_info = db(db.courses2.id == course).select()[0]
+        prereqs = []
+        if course_info.prereqs != []:
+            for course in course_info.prereqs:
+                prereqs.append(long(course.id))
+            if set(prereqs).issubset(classes):
+                if quarter == "Fall":
+                    classes.append(118)
+                    return
+                elif quarter == "Spring":
+                    classes.append(6)
+                    return
+                else:
+                    classes.append(118)
+                    classes.append(1)
+                    classes.append(2)
+                    classes.append(3)
+                    return
+        else:
+            if quarter == "Winter":
+                if not winter_queue.empty():
+                    current_quarter_classes.append(winter_queue.get())
+                    if area_classes < 4:
+                        area_classes += 1
+                    else:
+                        other_classes += 1
+                else:
+                    if random_course.winter == True:
+                        current_quarter_classes.append(random_course.id)
+                        other_courses.exclude(lambda r: r.id == random_course.id)
+                        quarter = check_if_next_quarter(classes, quarter, classes_per_quarter)
+                        if random_course.area == area and area_classes < 4:
+                            area_classes += 1
+                        else:
+                            other_classes += 1
+            elif quarter == "Spring":
+                if not spring_queue.empty():
+                    current_quarter_classes.append(spring_queue.get())
+                    if area_classes < 4:
+                        area_classes += 1
+                    else:
+                        other_classes += 1
+                else:
+                    if random_course.spring == True:
+                        current_quarter_classes.append(random_course.id)
+                        other_courses.exclude(lambda r: r.id == random_course.id)
+                        quarter = check_if_next_quarter(classes, quarter, classes_per_quarter)
+                        if random_course.area == area and area_classes < 4:
+                            area_classes += 1
+                        else:
+                            other_classes += 1
+            elif quarter == "Fall":
+                if not fall_queue.empty():
+                    current_quarter_classes.append(winter_queue.get())
+                    if area_classes < 4:
+                        area_classes += 1
+                    else:
+                        other_classes += 1
+                else:
+                    if random_course.fall == True:
+                        current_quarter_classes.append(random_course.id)
+                        other_courses.exclude(lambda r: r.id == random_course.id)
+                        quarter = check_if_next_quarter(classes, quarter, classes_per_quarter)
+                        if random_course.area == area and area_classes < 4:
+                            area_classes += 1
+                        else:
+                            other_classes += 1
+
+
+    if current_quarter_classes:
+        classes.extend(current_quarter_classes)
+    return quarter
+
+
+def intro_course_path(starting, area, classes, classes_per_quarter):
+    intro_classes = db(db.courses2.area == 1).select()
+    intro = []
+    for course in intro_classes:
+        intro.append(course.id)
+
+def predefined_intro(classes_per_quarter):
+    if classes_per_quarter == 1:
+        return [1,2,3,5,4,6]
+    elif classes_per_quarter == 2:
+        return [1,2,3,5,4,6]
+    else:
+        return [1,2,118,3,5,118,4,6,118]
+    
+    
+def insert_foundation_courses(current_quarter, classes_per_quarter, classes_to_take):
+    foundation_classes = db(db.courses2.area.contains(2)).select()
+    foundation = []
+    for course in foundation_classes:
+        foundation.append(long(course.id))
+    current_quarter_classes = []
+    while foundation:
+        if len(current_quarter_classes) == classes_per_quarter:
+            classes_to_take.extend(current_quarter_classes)
+            del current_quarter_classes[:]
+            current_quarter = next_quarter(current_quarter)
+        else:
+            current_quarter_classes.append(foundation.pop(0))
+    classes_to_take.extend(current_quarter_classes)
+    return current_quarter
+
+
+def insert_intro_courses(starting_quarter, classes_per_quarter, classes_to_take):
+    intro_classes = db(db.courses2.area.contains(1)).select()
+    intro = []
+    added = 0
+    current_quarter = starting_quarter
+    for course in intro_classes:
+        intro.append(course.id)
+
+    if auth.is_logged_in():
+        student_courses = db(db.student_courses_taken.user_id == auth.user.id).select()
+
+        classes_taken = []
+        if len(student_courses) > 0:
+            for course in student_courses[0].taken:
+                classes_taken.append(long(course))
+
+            current_quarter_classes = []
+            while added < 6:
+                if len(current_quarter_classes) == classes_per_quarter:
+                    classes_to_take.extend(current_quarter_classes)
+                    del current_quarter_classes[:]
+                    starting_quarter = next_quarter(starting_quarter)
+                course = intro[0]
+                if course not in classes_taken:
+                    course_info = db(db.courses2.id == course).select()
+                    prereqs = []
+                    for course in course_info[0].prereqs:
+                        prereqs.append(long(course.id))
+                    if set(prereqs).issubset(classes_to_take):
+                        current_quarter_classes.append(intro.pop(0))
+                        added += 1
+                    else:
+                        for i in range(len(intro)):
+                            if len(current_quarter_classes) == classes_per_quarter:
+                                classes_to_take.extend(current_quarter_classes)
+                                del current_quarter_classes[:]
+                            prereqs = []
+                            course_info = db(db.courses2.id == intro[i]).select()
+                            for course in course_info[0].prereqs:
+                                prereqs.append(long(course.id))
+                            if set(prereqs).issubset(classes_to_take):
+                                current_quarter_classes.append(intro[i])
+                                added += 1
+                            elif i == len(intro)-1:
+                                current_quarter_classes.append(118)
+                else:
+                    intro.pop(0)
+                    added += 1
+            classes_to_take.extend(current_quarter_classes)
+            if classes_per_quarter == 3:
+                classes_to_take.pop()
+                classes_to_take.append(6)
+            for course in classes_taken:
+                if len(classes_to_take) % classes_per_quarter != 0:
+                    classes_to_take.append(118)
+            starting_quarter = next_quarter(starting_quarter)
+        else:
+            classes_to_take.extend(predefined_intro(classes_per_quarter))
+            starting_quarter = next_quarter(starting_quarter)
+            starting_quarter = next_quarter(starting_quarter)
+    else:
+        classes_to_take.extend(predefined_intro(classes_per_quarter))
+        starting_quarter = next_quarter(starting_quarter)
+        starting_quarter = next_quarter(starting_quarter)
+
+
+
+
+
+
+def shortest_path_compsci(starting, area, classes_per_quarter, area_classes, other_classes):
+    classes_to_take = []
+
+    current_quarter = starting
+    insert_intro_courses(starting, classes_per_quarter, classes_to_take)
+    current_quarter = insert_foundation_courses(current_quarter, classes_per_quarter, classes_to_take)
+    current_quarter = create_classes_path(classes_to_take, current_quarter, area, classes_per_quarter, area_classes, other_classes)
+
+    return classes_to_take

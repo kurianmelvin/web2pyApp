@@ -1,0 +1,639 @@
+{{extend 'layout.html'}}
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+<title>My Project</title>
+<link rel="stylesheet" href="../static/css/styles.css">	
+  <link rel="stylesheet" href="{{=URL('static','css/bootstrap.min.css')}}"/>
+
+    <link rel="stylesheet" href="{{=URL('static','css/web2py-bootstrap3.css')}}"/>
+
+    <link rel="shortcut icon" href="{{=URL('static','images/favicon.ico')}}" type="image/x-icon">
+
+    <link rel="apple-touch-icon" href="{{=URL('static','images/favicon.png')}}">
+
+    <!-- All JavaScript at the bottom, except for Modernizr which enables
+         HTML5 elements & feature detects -->
+
+
+    <script src="{{=URL('static','js/modernizr-2.8.3.min.js')}}"></script>
+<style>
+
+body.main{
+	    background-color: White;
+	
+}
+</style>	
+</head>
+  
+	<h1 class = "titleFif">COLLEGE OF COMPUTING AND DIGITAL MEDIA
+</h1>
+  <!-- <body class="main" style="color:white; background-image:url(../static/images/background.jpg); background-size:cover; ">  -->
+  <body class="main" >
+ 
+
+
+      </div>
+
+    </nav>
+    
+
+	
+
+<div class="w3-content" style="max-width:70%;  ">
+  <img class="mySlides" id="img1" src="../static/images/heroMSCS.jpg"  >
+  
+  <p id="img2"    onclick="this.focus()"> 
+ Overview
+ <br>
+ DePaul's graduate Computer Science program is the premier training ground for computing professionals in the Chicago area. Unlike a certificate program, our master's courses focus on fundamental concepts that remain constant, even as technology changes rapidly. Unlike more research focused institutions, however, our courses emphasize the programmatic application of these fundamental concepts. Students interested in research will find an abundance of advanced topics --- medical imaging, data mining, algorithmic analysis, and scientific computing, to name a few. </p>
+
+  
+  <img id="img3" class="mySlides" src="../static/images/heroMSIS.jpg"  >
+  <p id="img4"  >
+  
+  Overview
+<br>
+
+The MS in Information Systems fits your career path if it involves running an IT organization or managing information effectively through information systems. In today's environment, information systems (IS) are planned, operated and maintained not only by IS departments but also by IS-user organizational units. Because of this reality, career opportunities for IS graduates are found in both traditional IS departments and IS-user business units. Moreover, a variety of equipment from aircraft to household electronics frequently use embedded systems. Graduates of IS majors find opportunities in organizations that plan, design and market the functionality of these systems. Thus, our MS-IS emphasizes the balance between technical skills, modeling proficiency, as well as strategic and organizational knowledge for a wide range of IS usage contexts.</p>
+   <img id="img5" class="mySlides" src="../static/images/courses.png"    >
+  <p id="img6"  > 
+<br>
+       Major Elective Courses for Computer Science
+      <br>
+*Software and Systems Development<br>
+*Theory<br>
+*Data Science<br>
+*Database Systems<br>
+*Artificial Intelligence<br>
+*Software Engineering<br>
+*Multimedia<br>
+      
+<br>
+       Concentrations For Information Systems
+      <br>
+        
+      *Business Analysis/System Analysis Concentration<br>
+      *Business Intelligence Concentration<br>
+      *Database Administration Concentration<br>
+      *IT Enterprise Concentration<br>
+      *Standard Concentration<br>
+</p>
+  
+ 
+  <div class="w3-row-padding w3-section" >
+  
+    <div class="w3-col s4">
+      <img  id="img19" src="../static/images/heroMSCS.jpg"   onclick="currentDiv(1)">
+	<p id="img20"  > 
+	<strong>Overviewr</strong>
+	<br>
+		 DePaul's graduate Computer Science program is the premier training ground for computing professionals in the Chicago area....</p>
+	  
+    </div>
+    <div class="w3-col s4">
+	
+      <img id="img21" src="../static/images/heroMSIS.jpg"   onclick="currentDiv(2)">
+	  <p id="img22"  > 
+	<strong>Overview</strong>
+	<br>
+	The MS in Information Systems fits your career path if it involves running an IT organization or managing information effectively through information systems....</p>
+	  
+	  
+    </div>
+       <div class="w3-col s4">
+      <img id="img23" src="../static/images/courses.png"   onclick="currentDiv(3)">
+	  <p id="img24"  > 
+	<strong>Course List </strong>
+<br>
+</p>
+	<br>
+	  <br>
+	   
+    </div>
+	
+	<a id="sidebar2" class="w3-btn-floating" style="height:75%;  position:absolute;top:25%;left:7%; color: rgba(0,0,0, 1); background-color:rgba(205,200,177, 0.5);" onclick="plusDivs(-1)"><br>&#8666;<br>&#8666;<br>&#8666;<br>&#8666;<br>&#8666;<br>&#8666;<br>&#8666;<br>&#8666;<br>&#8666;<br>&#8666;<br>&#8666;<br>&#8666;<br>&#8666;<br>&#8666;<br>&#8666;<br>&#8666;<br>&#8666;<br>&#8666;<br>&#8666;<br>&#8666;<br>&#8666;<br>&#8666;<br>&#8666;<br>&#8666;<br>&#8666;<br>&#8666;</a>
+	<a id="sidebar3" class="w3-btn-floating" style="height:75%; position:absolute;top:25%;right:7%; color: rgba(0,0,0, 1); background-color:rgba(205,200,177, 0.5);" onclick="plusDivs(1)"><br>&#8667;<br>&#8667;<br>&#8667;<br>&#8667;<br>&#8667;<br>&#8667;<br>&#8667;<br>&#8667;<br>&#8667;<br>&#8667;<br>&#8667;<br>&#8667;<br>&#8667;<br>&#8667;<br>&#8667;<br>&#8667;<br>&#8667;<br>&#8667;<br>&#8667;<br>&#8667;<br>&#8667;<br>&#8667;<br>&#8667;<br>&#8667;<br>&#8667;<br>&#8667;</a>
+	
+	
+
+  </div>
+</div>
+
+
+
+
+<script>
+
+var slideIndex = 1;
+showDivs(slideIndex);
+
+function plusDivs(n) {
+  showDivs(slideIndex += n);
+}
+
+function currentDiv(n) {
+  showDivs(slideIndex = n);
+}
+
+function showDivs(n) {
+  var i;
+  var x = document.getElementsByClassName("mySlides");
+  var dots = document.getElementsByClassName("demo");
+  if (n > x.length) {slideIndex = 1}    
+  if (n < 1) {slideIndex = x.length} ;
+  for (i = 0; i < x.length; i++) {
+     x[i].style.display = "none";  
+  }
+  for (i = 0; i < dots.length; i++) {
+     dots[i].className = dots[i].className.replace(" w3-border-red", "");
+  }
+  x[slideIndex-1].style.display = "block";  
+  dots[slideIndex-1].className += " w3-border-red";
+}
+
+
+var slideIndex = 1;
+showDivs(slideIndex);
+
+function plusDivs(n) {
+  showDivs(slideIndex += n);
+}
+
+function showDivs(n) {
+  var i;
+  var x = document.getElementsByClassName("mySlides");
+  if (n > x.length) {slideIndex = 1}    
+  if (n < 1) {slideIndex = x.length} ;
+  for (i = 0; i < x.length; i++) {
+     x[i].style.display = "none";  
+  }
+  x[slideIndex-1].style.display = "block";  
+}
+
+function bigImg(x) {
+    x.style.height = "10%";
+    x.style.width = "50%";
+	
+}
+
+function normalImg(x) {
+    x.style.height = "25%";
+    x.style.width = "32%";
+}
+
+
+
+
+
+var delay = function (img1, callback) {
+    var timeout = null;
+    img1.onClick = function() {
+        // Set timeout to be a timer which will invoke callback after 1s
+        timeout = setTimeout(callback, 530);
+    };
+	img1.onclick = function() {
+	img2.style.display = "block";
+     
+	  }
+	img2.onclick = function() {
+	img2.style.display = "none";
+     
+	  }
+
+    img2.onmouseout = function() {
+        // Clear any timers set to timeout
+	
+    img2.style.display = "none";
+	 clearTimeout(timeout);
+    }
+};
+
+delay(document.getElementById('img1'), function() {
+    img2.style.display = "block";
+});
+
+
+var delay = function (img3, callback) {
+    var timeout = null;
+    img3.onClick = function() {
+        // Set timeout to be a timer which will invoke callback after 1s
+        timeout = setTimeout(callback, 530);
+    };
+	img3.onclick = function() {
+	img4.style.display = "block";
+     
+	  }
+	img4.onclick = function() {
+	img4.style.display = "none";
+     
+	  }
+
+    img4.onmouseout = function() {
+        // Clear any timers set to timeout
+	
+    img4.style.display = "none";
+	 clearTimeout(timeout);
+    }
+};
+
+delay(document.getElementById('img3'), function() {
+    img4.style.display = "block";
+});
+
+
+
+var delay = function (img5, callback) {
+    var timeout = null;
+    img5.onClick = function() {
+        // Set timeout to be a timer which will invoke callback after 1s
+        timeout = setTimeout(callback, 530);
+    };
+	img5.onclick = function() {
+	img6.style.display = "block";
+     
+	  }
+	img6.onclick = function() {
+	img6.style.display = "none";
+     
+	  }
+
+    img6.onmouseout = function() {
+        // Clear any timers set to timeout
+	
+    img6.style.display = "none";
+	 clearTimeout(timeout);
+    }
+};
+
+
+delay(document.getElementById('img5'), function() {
+    img6.style.display = "block";
+});
+
+
+
+var delay = function (img7, callback) {
+    var timeout = null;
+    img7.onmouseover = function() {
+        // Set timeout to be a timer which will invoke callback after 1s
+        timeout = setTimeout(callback, 530);
+    };
+	img7.onclick = function() {
+	img8.style.display = "none";
+     
+	  }
+	img8.onclick = function() {
+	img8.style.display = "none";
+     
+	  }
+
+    img8.onmouseout = function() {
+        // Clear any timers set to timeout
+	
+    img8.style.display = "none";
+	 clearTimeout(timeout);
+    }
+};
+
+
+delay(document.getElementById('img7'), function() {
+    img8.style.display = "block";
+});
+
+
+var delay = function (img9, callback) {
+    var timeout = null;
+    img9.onmouseover = function() {
+        // Set timeout to be a timer which will invoke callback after 1s
+        timeout = setTimeout(callback, 530);
+    };
+	img9.onclick = function() {
+	img10.style.display = "none";
+     
+	  }
+	img10.onclick = function() {
+	img10.style.display = "none";
+     
+	  }
+
+    img10.onmouseout = function() {
+        // Clear any timers set to timeout
+	
+    img10.style.display = "none";
+	 clearTimeout(timeout);
+    }
+};
+
+
+delay(document.getElementById('img9'), function() {
+    img10.style.display = "block";
+});
+
+
+var delay = function (img11, callback) {
+    var timeout = null;
+    img11.onmouseover = function() {
+        // Set timeout to be a timer which will invoke callback after 1s
+        timeout = setTimeout(callback, 530);
+    };
+	img11.onclick = function() {
+	img12.style.display = "none";
+     
+	  }
+	img12.onclick = function() {
+	img12.style.display = "none";
+     
+	  }
+
+    img12.onmouseout = function() {
+        // Clear any timers set to timeout
+	
+    img12.style.display = "none";
+	 clearTimeout(timeout);
+    }
+};
+
+
+delay(document.getElementById('img11'), function() {
+    img12.style.display = "block";
+});
+
+
+var delay = function (img13, callback) {
+    var timeout = null;
+    img13.onmouseover = function() {
+        // Set timeout to be a timer which will invoke callback after 1s
+        timeout = setTimeout(callback, 530);
+    };
+	img13.onclick = function() {
+	img14.style.display = "none";
+     
+	  }
+	img14.onclick = function() {
+	img14.style.display = "none";
+     
+	  }
+
+    img14.onmouseout = function() {
+        // Clear any timers set to timeout
+	
+    img14.style.display = "none";
+	 clearTimeout(timeout);
+    }
+};
+
+
+delay(document.getElementById('img13'), function() {
+    img14.style.display = "block";
+});
+
+
+var delay = function (img15, callback) {
+    var timeout = null;
+    img15.onmouseover = function() {
+        // Set timeout to be a timer which will invoke callback after 1s
+        timeout = setTimeout(callback, 530);
+    };
+	img15.onclick = function() {
+	img16.style.display = "none";
+     
+	  }
+	img16.onclick = function() {
+	img16.style.display = "none";
+     
+	  }
+
+    img16.onmouseout = function() {
+        // Clear any timers set to timeout
+	
+    img16.style.display = "none";
+	 clearTimeout(timeout);
+    }
+};
+delay(document.getElementById('img15'), function() {
+    img16.style.display = "block";
+});
+
+
+var delay = function (img17, callback) {
+    var timeout = null;
+    img17.onmouseover = function() {
+        // Set timeout to be a timer which will invoke callback after 1s
+        timeout = setTimeout(callback, 530);
+    };
+	img17.onclick = function() {
+	img18.style.display = "none";
+     
+	  }
+	img18.onclick = function() {
+	img18.style.display = "none";
+     
+	  }
+
+    img18.onmouseout = function() {
+        // Clear any timers set to timeout
+	
+    img18.style.display = "none";
+	 clearTimeout(timeout);
+    }
+};
+
+
+delay(document.getElementById('img17'), function() {
+    img18.style.display = "block";
+});
+
+
+var delay = function (img19, callback) {
+    var timeout = null;
+    img19.onmouseover = function() {
+        // Set timeout to be a timer which will invoke callback after 1s
+        timeout = setTimeout(callback, 530);
+    };
+
+    img19.onmouseout = function() {
+        // Clear any timers set to timeout
+	
+    img20.style.display = "none";
+	 clearTimeout(timeout);
+    }
+};
+
+
+delay(document.getElementById('img19'), function() {
+    img20.style.display = "block";
+});
+
+
+var delay = function (img21, callback) {
+    var timeout = null;
+    img21.onmouseover = function() {
+        // Set timeout to be a timer which will invoke callback after 1s
+        timeout = setTimeout(callback, 590);
+    };
+
+    img21.onmouseout = function() {
+        // Clear any timers set to timeout
+	
+    img22.style.display = "none";
+	 clearTimeout(timeout);
+    }
+};
+
+
+delay(document.getElementById('img21'), function() {
+    img22.style.display = "block";
+	
+});
+var delay = function (img23, callback) {
+    var timeout = null;
+    img23.onmouseover = function() {
+        // Set timeout to be a timer which will invoke callback after 1s
+        timeout = setTimeout(callback, 590);
+    };
+
+    img23.onmouseout = function() {
+        // Clear any timers set to timeout
+	
+    img24.style.display = "none";
+	 clearTimeout(timeout);
+    }
+};
+
+
+delay(document.getElementById('img23'), function() {
+    img24.style.display = "block";
+});
+var delay = function (img25, callback) {
+    var timeout = null;
+    img25.onmouseover = function() {
+        // Set timeout to be a timer which will invoke callback after 1s
+        timeout = setTimeout(callback, 590);
+    };
+
+    img25.onmouseout = function() {
+        // Clear any timers set to timeout
+	
+    img26.style.display = "none";
+	 clearTimeout(timeout);
+    }
+};
+
+
+delay(document.getElementById('img25'), function() {
+    img26.style.display = "block";
+});
+var delay = function (img27, callback) {
+    var timeout = null;
+    img27.onmouseover = function() {
+        // Set timeout to be a timer which will invoke callback after 1s
+        timeout = setTimeout(callback, 590);
+    };
+
+    img27.onmouseout = function() {
+        // Clear any timers set to timeout
+	
+    img28.style.display = "none";
+	 clearTimeout(timeout);
+    }
+};
+
+
+delay(document.getElementById('img27'), function() {
+    img28.style.display = "block";
+});
+var delay = function (img29, callback) {
+    var timeout = null;
+    img29.onmouseover = function() {
+        // Set timeout to be a timer which will invoke callback after 1s
+        timeout = setTimeout(callback, 590);
+    };
+
+    img29.onmouseout = function() {
+        // Clear any timers set to timeout
+	
+    img30.style.display = "none";
+	 clearTimeout(timeout);
+    }
+};
+
+
+delay(document.getElementById('img29'), function() {
+    img30.style.display = "block";
+});
+var delay = function (img31, callback) {
+    var timeout = null;
+    img31.onmouseover = function() {
+        // Set timeout to be a timer which will invoke callback after 1s
+        timeout = setTimeout(callback, 590);
+    };
+
+    img31.onmouseout = function() {
+        // Clear any timers set to timeout
+	
+    img32.style.display = "none";
+	 clearTimeout(timeout);
+    }
+};
+
+
+delay(document.getElementById('img31'), function() {
+    img32.style.display = "block";
+});
+var delay = function (img33, callback) {
+    var timeout = null;
+    img33.onmouseover = function() {
+        // Set timeout to be a timer which will invoke callback after 1s
+        timeout = setTimeout(callback, 590);
+    };
+
+    img33.onmouseout = function() {
+        // Clear any timers set to timeout
+	
+    img34.style.display = "none";
+	 clearTimeout(timeout);
+    }
+};
+
+
+delay(document.getElementById('img33'), function() {
+    img34.style.display = "block";
+});
+
+var delay = function (img35, callback) {
+    var timeout = null;
+    img35.onmouseover = function() {
+        // Set timeout to be a timer which will invoke callback after 1s
+        timeout = setTimeout(callback, 590);
+    };
+
+    img35.onmouseout = function() {
+        // Clear any timers set to timeout
+	
+    img36.style.display = "none";
+	 clearTimeout(timeout);
+    }
+};
+
+
+delay(document.getElementById('img35'), function() {
+    img36.style.display = "block";
+});
+
+ 
+
+
+
+</script>
+
+
+
+	
+  </body>
+</html>
